@@ -1,12 +1,15 @@
 package scalabook.interfaces
 
 import com.mongodb.DBObject
+import scala.collection.mutable.{Map => MutableMap}
 
 /**
   * Created by bruno on 10/02/17.
   */
 trait Memorizer extends ReadOnly {
-  val history = scala.collection.mutable.Map[Int, DBObject]()
+
+  val history: MutableMap[Int, DBObject] = MutableMap[Int, DBObject]()
+
   override def findOne = {
     history.getOrElseUpdate(-1, { super.findOne })
   }

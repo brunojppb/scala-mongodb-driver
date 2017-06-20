@@ -9,6 +9,7 @@ import scalabook.mongodb.wrapper._
   */
 trait ReadOnly {
 
+  // Mongo collection represents a sort of table in relational databases.
   val underlying: MongoDBCollection
 
   def name = underlying.getName

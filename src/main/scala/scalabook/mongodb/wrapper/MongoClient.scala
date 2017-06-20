@@ -17,6 +17,9 @@ class MongoClient (val host: String, val port: Int) {
 
   def dropDB(name: String) = underlying.dropDatabase(name)
 
+  // createDB(_) and db() do the same thing.
+  // the MongoDB Java driver creates a db if one isn't found.
+  // These two are added only for readability
   def createDB(name: String) = DB(underlying.getDB(name))
 
   def db(name: String) = DB(underlying.getDB(name))

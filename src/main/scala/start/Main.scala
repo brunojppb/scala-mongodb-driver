@@ -12,15 +12,17 @@ object Main extends App {
   def client = new MongoClient
   def db = client.createDB("mydb")
 
-  for(name <- db.collectionNames) println(name)
+  for {
+    name <- db.collectionNames
+  } yield print(s"DB name: $name\n\n")
 
-  val col = db.readOnlyCollection("test")
-  print(col.name)
+  val collection = db.readOnlyCollection("test")
+  print(collection.name)
 
-  val adminCol = db.administrableCollection("test")
-  adminCol.drop
+  val adminCollection = db.administrableCollection("test")
+  adminCollection.drop
 
-  val updatableCol = db.updatableCollection("test")
+  val updatableCollection = db.updatableCollection("test")
 
   val doc = new BasicDBObject()
   doc.put("name", "MongoDB")
@@ -31,18 +33,18 @@ object Main extends App {
   info.put("x", 203)
   info.put("y", 101)
   doc.put("info", info)
-  updatableCol += doc
+  updatableCollection += doc
 
-  println(updatableCol.findOne)
+  println(updatableCollection.findOne)
 
-  updatableCol -= doc
-  println(updatableCol.findOne)
+  updatableCollection -= doc
+  println(updatableCollection.findOne)
 
-  for(i <- 1 to 100) updatableCol += new BasicDBObject("i", i)
+  for(i <- 1 to 100) updatableCollection += new BasicDBObject("i", i)
 
   val query = new BasicDBObject()
   query.put("i", 71)
-  val cursor = col.find(query)
+  val cursor = updatableCollection.find(query)
   while(cursor.hasNext) {
     println(cursor.next)
   }
